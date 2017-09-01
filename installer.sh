@@ -1,0 +1,200 @@
+#!/bin/bash
+
+## Handle arguments, if any
+while [[ $# -gt 0 ]]
+do
+  key="$1"
+
+  case $key in
+    -q|--silent)
+      SILENT="TRUE"
+      ;;
+    -h|--h|*help|*)
+      echo "Arguments silent (-q|--silent), install api2 (-a|--api2), api2 branch other than master (-ab|--api2-branch)"
+      kill -INT $$
+      ;;
+  esac
+
+  shift # past argument or value
+done
+
+## Set some initial global variables
+if [ ! -f "./sources/0001-environment.sh" ]; then
+  echo "Missing environment source. Exiting..."
+  kill -INT $$
+fi
+source ./sources/0001-environment.sh
+
+if [ "${whichOS}" = "Darwin" ]; then
+  thisDir=$(builtin cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+  install_homebrew
+else
+  thisDir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+fi
+
+user_dir=$(cd ~ && pwd)
+OPWD=$PWD
+
+if [ -z "${SILENT}" ]; then
+  source ${thisDir}/install/mixins.sh
+  source ${thisDir}/install/xcode.sh
+  source ${thisDir}/install/brew.sh
+  source ${thisDir}/install/composer.sh
+  source ${thisDir}/install/npm.sh
+  source ${thisDir}/install/fonts.sh
+fi
+
+function clean_bash_profile()
+{
+  if [ ! -e "${user_dir}/.bash_profile" ] && [ ! -e "${user_dir}/.bashrc" ]; then
+    touch ${user_dir}/.bash_profile
+    touch ${user_dir}/.bashrc
+  fi
+
+  BASH_PROFILE=$(test -e ${user_dir}/.bash_profile && echo "${user_dir}/.bash_profile")
+  BASHRC=$(test -e ${user_dir}/.bashrc && echo "${user_dir}/.bashrc")
+
+  declare -a BPARR=()
+  [ ! -z "${BASH_PROFILE}" ] && BPARR+=("${BASH_PROFILE}")
+  [ ! -z "${BASHRC}" ] && BPARR+=("${BASHRC}")
+  for f in "${BPARR[@]}"
+  do
+    LINENUMS=""; while IFS=" "; read -ra LINE; do for i in "${LINE[@]}"; do export LINENUMS="$LINENUMS$i|"; done; done <<< "$(awk '/NODE_ENV/{ print NR; }' ${f})"
+    [ "${whichOS}" = "Darwin" ] && [ ! -z "${LINENUMS}" ] && LINENUMS=${LINENUMS:0:${#LINENUMS}-1}
+    [ "${whichOS}" = "Linux" ] && [ ! -z "${LINENUMS}" ] && LINENUMS="${LINENUMS::-1}"
+    awk 'NR!~/^('"$LINENUMS"')$/' ${f} > ${user_dir}/tmp-bashrc
+    LINENUMS=""; while IFS=" "; read -ra LINE; do for i in "${LINE[@]}"; do export LINENUMS="$LINENUMS$i|"; done; done <<< "$(awk '/NODE_CONFIG_DIR/{ print NR; }' ${f})"
+    [ "${whichOS}" = "Darwin" ] && [ ! -z "${LINENUMS}" ] && LINENUMS=${LINENUMS:0:${#LINENUMS}-1}
+    [ "${whichOS}" = "Linux" ] && [ ! -z "${LINENUMS}" ] && LINENUMS="${LINENUMS::-1}"
+    awk 'NR!~/^('"$LINENUMS"')$/' ${user_dir}/tmp-bashrc > ${user_dir}/tmp-bashrc1
+    LINENUMS=""; while IFS=" "; read -ra LINE; do for i in "${LINE[@]}"; do export LINENUMS="$LINENUMS$i|"; done; done <<< "$(awk '/NVM_DIR/{ print NR; }' ${f})"
+    [ "${whichOS}" = "Darwin" ] && [ ! -z "${LINENUMS}" ] && LINENUMS=${LINENUMS:0:${#LINENUMS}-1}
+    [ "${whichOS}" = "Linux" ] && [ ! -z "${LINENUMS}" ] && LINENUMS="${LINENUMS::-1}"
+    awk 'NR!~/^('"$LINENUMS"')$/' ${user_dir}/tmp-bashrc1 > ${user_dir}/tmp-bashrc2
+    cat ${user_dir}/tmp-bashrc2 > ${f}
+    rm -f ${user_dir}/tmp-bashrc*
+  done
+}
+
+function patch_bash_profile()
+{
+  clean_bash_profile
+
+  if [ ! -e "${user_dir}/.bash_profile" ] && [ ! -e "${user_dir}/.bashrc" ]; then
+    touch ${user_dir}/.bash_profile
+    touch ${user_dir}/.bashrc
+  fi
+
+  BASH_PROFILE=$(test -e ${user_dir}/.bash_profile && echo "${user_dir}/.bash_profile")
+  BASHRC=$(test -e ${user_dir}/.bashrc && echo "${user_dir}/.bashrc")
+
+  declare -a BPARR=()
+  [ ! -z "${BASH_PROFILE}" ] && BPARR+=("${BASH_PROFILE}")
+  [ ! -z "${BASHRC}" ] && BPARR+=("${BASHRC}")
+  for f in "${BPARR[@]}"
+  do
+    BP_CONTENTS="$(cat ${f})"
+    [[ $BP_CONTENTS != *${user_dir}/.mycli* ]] && echo "source ${user_dir}/.mycli" >> ${f}
+    if [ "${whichOS}" = "Darwin" ]; then
+      [[ $BP_CONTENTS != *bash_completion* ]] && echo '[ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion' >> ${f}
+    else
+      [[ $BP_CONTENTS != *bash_completion* ]] && echo '[ -f /etc/bash_completion ] && source /etc/bash_completion' >> ${f}
+    fi
+    if [ ! -z "${NVM_INSTALLED}" ]; then
+      [[ "${BP_CONTENTS}" != *"NVM_DIR"* ]] && echo 'export NVM_DIR="$HOME/.nvm"' >> ${f} && \
+        echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm' >> ${f}
+    fi
+    if [ ! -z "${NODE_INSTALLED}" ]; then
+      [[ "${BP_CONTENTS}" != *"NODE_ENV"* ]] && echo "export NODE_ENV=\"local\"" >> ${f}
+      [[ "${BP_CONTENTS}" != *"NODE_CONFIG_DIR"* ]] && echo "export NODE_CONFIG_DIR=\"${user_dir}/Projects/node_config\"" >> ${f}
+    fi
+  done
+}
+
+function setup_nvm()
+{
+  if [ ! -d "~/.nvm" ]; then
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+    export NVM_INSTALLED="TRUE"
+  else
+    rm -rf ~/.nvm
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+  fi
+}
+
+function runCompile()
+{
+  if [ "${whichOS}" = "Darwin" ]; then
+    brew install shc
+    shc -f ${thisDir}/bin/mycli -o ${thisDir}/bin/mycli || { echo >&2 "mycli binary creation failed with $?"; exit 1; }
+  else
+    sudo add-apt-repository -y ppa:neurobin/ppa
+    sudo apt-get update
+    sudo apt-get install -y shc
+    shc -f ${thisDir}/bin/mycli -o ${thisDir}/bin/mycli || { echo >&2 "mycli binary creation failed with $?"; exit 1; }
+  fi
+}
+
+## Create the mycli executable
+if [ -f "bin/mycli" ]; then
+  rm -f bin/mycli
+fi
+
+sudo rm -f ${thisDir}/bin/mycli
+touch ${thisDir}/bin/mycli
+echo '#!/bin/bash' > ${thisDir}/bin/mycli
+
+## Create the .mycli source file for bash profile
+if [ -f "${user_dir}/.mycli" ]; then
+  rm -f ${user_dir}/.mycli
+fi
+touch ${user_dir}/.mycli
+echo "#!/bin/bash" > ${user_dir}/.mycli
+
+cd ${thisDir}
+
+if [ "${whichOS}" = "Darwin" ]; then
+  files=($(builtin cd sources && ls))
+else
+  files=($(cd sources && ls))
+fi
+
+# Loop through SH files and add the contents to the mycli
+for f in "${files[@]}"
+do
+  if [ -f "./sources/${f}" ]; then
+    echo "Adding source ${f} to mycli..."
+    tail -n +2 "./sources/${f}" >> bin/mycli
+  fi
+  if [ -f "./sources/${f}" ]; then
+    echo "Adding source ${f} to mycli..."
+    tail -n +2 "./sources/${f}" >> bin/mycli
+  fi
+
+  # Add general and git aliases to the bash profile
+  if [ "${f}" = "0002-aliases.sh" ] || [ "${f}" = "0005-git.sh" ]; then
+    tail -n +2 "./sources/${f}" >> ${user_dir}/.mycli
+  fi
+done
+
+setup_nvm
+patch_bash_profile
+
+## Install MyCLI in /usr/local/bin/mycli
+make install || { echo >&2 "Clone failed with $?"; exit 1; }
+
+## Create alias mcli
+if [ -f "/usr/local/bin/mcli" ]; then
+  ## In case there is some other binary file with the same name (mcli)
+  mv /usr/local/bin/mcli /usr/local/bin/mcli-OLD
+elif [ -L "/usr/local/bin/mcli" ]; then
+  ## Remove the old symbolic link
+  unlink /usr/local/bin/mcli
+fi
+ln -s /usr/local/bin/mycli /usr/local/bin/mcli
+
+cd $OPWD
