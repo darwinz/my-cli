@@ -180,6 +180,8 @@ do
     tail -n +2 "./sources/${f}" >> ${user_dir}/.mycli
   fi
 done
+# Add the program contents to the mycli
+tail -n +2 "./install/program.sh" >> bin/mycli
 
 setup_nvm
 patch_bash_profile

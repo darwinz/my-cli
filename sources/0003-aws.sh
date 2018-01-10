@@ -10,7 +10,7 @@ if [ -f "/usr/local/bin/aws" ]; then
   awsBin="/usr/local/bin/aws"
 else
   whichAws="$(which aws)"
-  awsBin=$(echo ${whichAws} | awk '{print $1;}')
+  awsBin=$(echo "${whichAws}" | awk '{print $1;}')
 fi
 
 function install_aws()
@@ -40,16 +40,9 @@ function aws_get_instance_info()
   while [[ $# -gt 0 ]]
   do
     key="$1"
-
     case $key in
-      -p|--profile)
-        PROFILE="$2"
-        shift # past argument
-        ;;
-      -q|--query)
-        QUERY="$2"
-        shift # past argument
-        ;;
+      -p|--profile) PROFILE="$2"; shift; ;;
+      -q|--query) QUERY="$2"; shift; ;;
     esac
 
     shift # past argument or value
@@ -100,7 +93,7 @@ function aws_elb_list_instances()
 
   unset LB_NAME && unset ENVIRONMENT && unset LB_TYPE && unset TG_NAME && unset KEYNAME
 
-  if [[ "$#" < "1" ]]; then
+  if [[ "$#" -lt "1" ]]; then
     read -p "Which environment (prod|dev*|test*|beta*|stage*)? " ENVIRONMENT
   fi
 
@@ -109,30 +102,12 @@ function aws_elb_list_instances()
     key="$1"
 
     case $key in
-      -lb|--lb-name)
-        LB_NAME="$2"
-        shift # past argument
-        ;;
-      -e|--env|--environment)
-        ENVIRONMENT="$2"
-        shift # past argument
-        ;;
-      -lt|--lb-type)
-        LB_TYPE="$2"
-        shift # past argument
-        ;;
-      -tg|--tg-name)
-        TG_NAME="$2"
-        shift # past argument
-        ;;
-      -k|--keyname)
-        KEYNAME="$2"
-        shift # past argument
-        ;;
-      -u|--user)
-        USER="$2"
-        shift # past argument
-        ;;
+      -lb|--lb-name) LB_NAME="$2"; shift; ;;
+      -e|--env|--environment) ENVIRONMENT="$2"; shift; ;;
+      -lt|--lb-type) LB_TYPE="$2"; shift; ;;
+      -tg|--tg-name) TG_NAME="$2"; shift; ;;
+      -k|--keyname) KEYNAME="$2"; shift; ;;
+      -u|--user) USER="$2"; shift; ;;
       -h|--h|*help|*)
         echo "Arguments app (-a|--app), environment (-e|--env|--environment), lb-type (-lt|--lb-type)"
         kill -INT $$
@@ -218,7 +193,7 @@ function aws_connect()
 
   unset LB_NAME && unset ENVIRONMENT && unset LB_TYPE && unset TG_NAME && unset KEYNAME
 
-  if [[ "$#" < "1" ]]; then
+  if [[ "$#" -lt "1" ]]; then
     read -p "Which environment (prod|dev*|test*|beta*|stage*)? " ENVIRONMENT
   fi
 
@@ -227,43 +202,20 @@ function aws_connect()
     key="$1"
 
     case $key in
-      -lb|--lb-name)
-        LB_NAME="$2"
-        shift # past argument
-        ;;
-      -e|--env|--environment)
-        ENVIRONMENT="$2"
-        shift # past argument
-        ;;
-      -lt|--lb-type)
-        LB_TYPE="$2"
-        shift # past argument
-        ;;
-      -tg|--tg-name)
-        TG_NAME="$2"
-        shift # past argument
-        ;;
-      -n|--instance-number)
-        NUMBER="$2"
-        shift # past argument
-        ;;
-      -l|--all)
-        ALL="TRUE"
-        ;;
+      -lb|--lb-name) LB_NAME="$2"; shift; ;;
+      -e|--env|--environment) ENVIRONMENT="$2"; shift; ;;
+      -lt|--lb-type) LB_TYPE="$2"; shift; ;;
+      -tg|--tg-name) TG_NAME="$2"; shift; ;;
+      -n|--instance-number) NUMBER="$2"; shift; ;;
+      -l|--all) ALL="TRUE"; ;;
       -c|--command)
         COMMAND="${@:2}"
         for (( i=0; i<${#COMMAND}; i++ )); do
           shift # past each word in argument
         done
         ;;
-      -k|--keyname)
-        KEYNAME="$2"
-        shift # past argument
-        ;;
-      -u|--user)
-        USER="$2"
-        shift # past argument
-        ;;
+      -k|--keyname) KEYNAME="$2"; shift; ;;
+      -u|--user) USER="$2"; shift; ;;
       -h|--h|*help|*)
         echo "Arguments app (-a|--app), environment (-e|--env|--environment), lb-type (-lt|--lb-type)"
         kill -INT $$
