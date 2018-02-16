@@ -6,6 +6,9 @@
 
 alias ll='ls -al'
 alias cic='set completion-ignore-case On'
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgl='kubectl logs -f'
 
 alias numFiles="echo $(ls -1 | wc -l)"
 alias qfind="find . -name "
