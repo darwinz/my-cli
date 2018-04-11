@@ -10,6 +10,8 @@ alias k='kubectl'
 alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
 alias kgl='kubectl logs -f'
+alias bi='bundle install'
+alias brake='bundle exec rake'
 
 alias numFiles="echo $(ls -1 | wc -l)"
 alias qfind="find . -name "
@@ -32,6 +34,11 @@ if [ "${whichOS}" = "Darwin" ]; then
     echo
   }
 fi
+
+function be
+{
+  bundle exec "$@"
+}
 
 ########################################################
 ################  End General Aliases ##################
