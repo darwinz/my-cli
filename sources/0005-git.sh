@@ -22,6 +22,7 @@ git config --global alias.dl '!git ll -1'
 git config --global alias.dlc 'diff --cached HEAD^'
 
 git config --global alias.s 'status -s'
+git config --global alias.sh show
 git config --global alias.co checkout
 git config --global alias.cob 'checkout -b'
 
