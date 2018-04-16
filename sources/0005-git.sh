@@ -7,6 +7,8 @@
 # one-line log
 git config --global alias.l 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short'
 
+git config --global alias.rp 'rev-parse'
+
 git config --global alias.a add
 git config --global alias.ap 'add -p'
 git config --global alias.c 'commit --verbose'
