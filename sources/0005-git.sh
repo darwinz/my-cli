@@ -26,6 +26,14 @@ git config --global alias.sh show
 git config --global alias.co checkout
 git config --global alias.cob 'checkout -b'
 
+git config --global alias.sq 'rebase -i'
+
+git config --global alias.pl 'pull origin'
+git config --global alias.pu 'push origin'
+
+git config --global alias.cf 'clean -f'
+git config --global alias.cdf 'clean -d -f'
+
 # list branches sorted by last modified
 git config --global alias.b "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
 
