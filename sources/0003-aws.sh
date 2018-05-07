@@ -31,7 +31,7 @@ function aws_get_instance_ips()
     PROFILE="default"
   fi
   echo -e "${GREEN}Getting EC2 instance IPs"$(test ! -z "${1}" && echo " in the ${1} environment" || echo "")${NC}
-  aws ec2 describe-instances${PROFILE} | grep -i publicip
+  aws ec2 describe-instances --profile ${PROFILE} | grep -i publicip
 }
 
 function aws_get_instance_info()
@@ -62,7 +62,7 @@ function aws_ssh()
   user_dir=$(builtin cd ~ && pwd)
   KEYNAME="${2}"
   if [ "$#" -lt 2 ]; then
-    KEYNAME="aws-dev.pem"
+    KEYNAME="aws"
   fi
   KEY="${user_dir}/.ssh/${KEYNAME}"
 
@@ -91,25 +91,21 @@ function aws_elb_list_instances()
     user_dir=$(builtin cd ~ && pwd)
   fi
 
-  unset LB_NAME && unset ENVIRONMENT && unset LB_TYPE && unset TG_NAME && unset KEYNAME
-
-  if [[ "$#" -lt "1" ]]; then
-    read -p "Which environment (prod|dev*|test*|beta*|stage*)? " ENVIRONMENT
-  fi
+  unset LB_NAME && unset PROFILE && unset LB_TYPE && unset TG_NAME && unset KEYNAME
 
   while [[ $# -gt 0 ]]
   do
     key="$1"
 
     case $key in
-      -lb|--lb-name) LB_NAME="$2"; shift; ;;
-      -e|--env|--environment) ENVIRONMENT="$2"; shift; ;;
-      -lt|--lb-type) LB_TYPE="$2"; shift; ;;
-      -tg|--tg-name) TG_NAME="$2"; shift; ;;
-      -k|--keyname) KEYNAME="$2"; shift; ;;
-      -u|--user) USER="$2"; shift; ;;
+      -lb|--lb-name) LB_NAME="$2"; shift; ;; # load balancer name
+      -p|--profile) PROFILE="$2"; shift; ;; # aws profile name
+      -lt|--lb-type) LB_TYPE="$2"; shift; ;; # load balancer type (alb|elb)
+      -tg|--tg-name) TG_NAME="$2"; shift; ;; # target group name (if alb load balancer type)
+      -k|--keyname) KEYNAME="$2"; shift; ;; # ssh key name
+      -u|--user) USER="$2"; shift; ;; # ssh user
       -h|--h|*help|*)
-        echo "Arguments app (-a|--app), environment (-e|--env|--environment), lb-type (-lt|--lb-type)"
+        echo "Arguments lb-name (-lb|--lb-name), aws profile (-p|--profile), lb-type (-lt|--lb-type), target group name (-tg|--tg-name), key name (-k|--keyname), ssh user (-u|--user)"
         kill -INT $$
         ;;
     esac
@@ -117,23 +113,15 @@ function aws_elb_list_instances()
     shift # past argument or value
   done
 
-  case "${ENVIRONMENT}" in
-    prod)
-      KEYNAME=$(test -z "${KEYNAME}" && echo "aws-prod.pem" || echo "${KEYNAME}")
-      PROFILE=" --profile production"
-      LB="$(aws_prod_elb ${APP})" ;;
-    dev*|test*|beta*|stage)
-      KEYNAME=$(test -z "${KEYNAME}" && echo "aws-dev.pem" || echo "${KEYNAME}")
-      PROFILE=" --profile default"
-      LB="$(aws_dev_elb ${APP} ${ENVIRONMENT})" ;;
-    *)  echo -e "${RED}Environment not recognized. Exiting...${NC}" && kill -INT $$ ;;
-  esac
+  KEYNAME=$(test -z "${KEYNAME}" && echo "aws" || echo "${KEYNAME}")
+  PROFILE=$([[ -z "${PROFILE}" ]] && echo "default" || echo "${PROFILE}")
+  LB=${LB_NAME}
 
   KEY="${user_dir}/.ssh/${KEYNAME}"
 
   if [ ! -f "${KEY}" ]; then
     read -p "$(echo -e "${YELLOW}Where is your ssh PEM key located (fullpath) for this environment?${NC}") " PEM_KEY
-    cp -f ${PEM_KEY} ${KEY}
+    cp -f ${PEM_KEY} ${KEY} && chmod 400 ${KEY}
   fi
 
   case "${LB_TYPE}" in
@@ -142,10 +130,10 @@ function aws_elb_list_instances()
       if [ -z "${TG_NAME}" ]; then
         TG_NAME="default"
       fi
-      lbTgARN=$(${awsBin} elbv2 describe-target-groups ${PROFILE} --names "${TG_NAME}" --query "TargetGroups[].TargetGroupArn[]" --output text)
-      declare -a LB_INSTANCES=$(${awsBin} elbv2 describe-target-health ${PROFILE} --target-group-arn "${lbTgARN}" --query "TargetHealthDescriptions[].Target[].Id[]" --output text) ;;
+      lbTgARN=$(${awsBin} elbv2 describe-target-groups --profile ${PROFILE} --names "${TG_NAME}" --query "TargetGroups[].TargetGroupArn[]" --output text)
+      declare -a LB_INSTANCES=$(${awsBin} elbv2 describe-target-health --profile ${PROFILE} --target-group-arn "${lbTgARN}" --query "TargetHealthDescriptions[].Target[].Id[]" --output text) ;;
     *)
-      declare -a LB_INSTANCES=$(${awsBin} elb describe-load-balancers ${PROFILE} --load-balancer-name ${LB_NAME} --query "LoadBalancerDescriptions[].Instances[]" --output text) ;;
+      declare -a LB_INSTANCES=$(${awsBin} elb describe-load-balancers --profile ${PROFILE} --load-balancer-name ${LB_NAME} --query "LoadBalancerDescriptions[].Instances[]" --output text) ;;
   esac
 
   declare -a ARR_INSTANCES=()
@@ -156,16 +144,16 @@ function aws_elb_list_instances()
 
   local numInstances=${#ARR_INSTANCES[@]}
   if [ "${#ARR_INSTANCES[@]}" -eq 1 ]; then
-    INSTANCEIP=$(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)
-    INSTANCE_LABEL=$(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)
+    INSTANCEIP=$(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)
+    INSTANCE_LABEL=$(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)
     echo -e "\n" ${ARR_INSTANCES} - ${INSTANCEIP} - ${INSTANCE_LABEL} "\n"
   elif [ "${#ARR_INSTANCES[@]}" -gt 1 ]; then
     echo -e "${GREEN}\nGetting instances...\n${NC}"
     declare -a INSTANCES=() && declare -a INSTANCEIPS=() && declare -a INSTANCE_LABELS=()
     for ec2Instance in $LB_INSTANCES
     do
-      INSTANCEIPS=("${INSTANCEIPS[@]}" $(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text))
-      INSTANCE_LABELS=("${INSTANCE_LABELS[@]}" "$(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)")
+      INSTANCEIPS=("${INSTANCEIPS[@]}" $(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text))
+      INSTANCE_LABELS=("${INSTANCE_LABELS[@]}" "$(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)")
     done
 
     echo -e "${GREEN}\nThere are ${#ARR_INSTANCES[@]} instances on this load balancer\n${NC}"
@@ -191,11 +179,7 @@ function aws_connect()
     user_dir=$(builtin cd ~ && pwd)
   fi
 
-  unset LB_NAME && unset ENVIRONMENT && unset LB_TYPE && unset TG_NAME && unset KEYNAME
-
-  if [[ "$#" -lt "1" ]]; then
-    read -p "Which environment (prod|dev*|test*|beta*|stage*)? " ENVIRONMENT
-  fi
+  unset LB_NAME && unset PROFILE && unset LB_TYPE && unset TG_NAME && unset KEYNAME
 
   while [[ $# -gt 0 ]]
   do
@@ -203,7 +187,7 @@ function aws_connect()
 
     case $key in
       -lb|--lb-name) LB_NAME="$2"; shift; ;;
-      -e|--env|--environment) ENVIRONMENT="$2"; shift; ;;
+      -p|--profile) PROFILE="$2"; shift; ;;
       -lt|--lb-type) LB_TYPE="$2"; shift; ;;
       -tg|--tg-name) TG_NAME="$2"; shift; ;;
       -n|--instance-number) NUMBER="$2"; shift; ;;
@@ -225,23 +209,15 @@ function aws_connect()
     shift # past argument or value
   done
 
-  case "${ENVIRONMENT}" in
-    prod)
-      KEYNAME=$(test -z "${KEYNAME}" && echo "aws-prod.pem" || echo "${KEYNAME}")
-      PROFILE=" --profile production"
-      LB="$(aws_prod_elb ${APP})" ;;
-    dev*|test*|beta*|stage)
-      KEYNAME=$(test -z "${KEYNAME}" && echo "aws-dev.pem" || echo "${KEYNAME}")
-      PROFILE=" --profile default"
-      LB="$(aws_dev_elb ${APP} ${ENVIRONMENT})" ;;
-    *)  echo -e "${RED}Environment not recognized. Exiting...${NC}" && kill -INT $$ ;;
-  esac
+  KEYNAME=$(test -z "${KEYNAME}" && echo "aws" || echo "${KEYNAME}")
+  PROFILE=$([[ -z "${PROFILE}" ]] && echo "default" || echo "${PROFILE}")
+  LB=${LB_NAME}
 
   KEY="${user_dir}/.ssh/${KEYNAME}"
 
   if [ ! -f "${KEY}" ]; then
     read -p "$(echo -e "${YELLOW}Where is your ssh PEM key located (fullpath) for this environment?${NC}") " PEM_KEY
-    cp -f ${PEM_KEY} ${KEY}
+    cp -f ${PEM_KEY} ${KEY} && chmod 400 ${KEY}
   fi
 
   case "${LB_TYPE}" in
@@ -250,10 +226,10 @@ function aws_connect()
       if [ -z "${TG_NAME}" ]; then
         TG_NAME="default"
       fi
-      lbTgARN=$(${awsBin} elbv2 describe-target-groups ${PROFILE} --names "${TG_NAME}" --query "TargetGroups[].TargetGroupArn[]" --output text)
-      declare -a LB_INSTANCES=$(${awsBin} elbv2 describe-target-health ${PROFILE} --target-group-arn "${lbTgARN}" --query "TargetHealthDescriptions[].Target[].Id[]" --output text) ;;
+      lbTgARN=$(${awsBin} elbv2 describe-target-groups --profile ${PROFILE} --names "${TG_NAME}" --query "TargetGroups[].TargetGroupArn[]" --output text)
+      declare -a LB_INSTANCES=$(${awsBin} elbv2 describe-target-health --profile ${PROFILE} --target-group-arn "${lbTgARN}" --query "TargetHealthDescriptions[].Target[].Id[]" --output text) ;;
     *)
-      declare -a LB_INSTANCES=$(${awsBin} elb describe-load-balancers ${PROFILE} --load-balancer-name ${LB_NAME} --query "LoadBalancerDescriptions[].Instances[]" --output text) ;;
+      declare -a LB_INSTANCES=$(${awsBin} elb describe-load-balancers --profile ${PROFILE} --load-balancer-name ${LB_NAME} --query "LoadBalancerDescriptions[].Instances[]" --output text) ;;
   esac
 
   declare -a ARR_INSTANCES=()
@@ -264,7 +240,7 @@ function aws_connect()
 
   local numInstances=${#ARR_INSTANCES[@]}
   if [ "${#ARR_INSTANCES[@]}" -eq 1 ]; then
-    HOST=$(aws ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$LB_INSTANCES']" --output text)
+    HOST=$(aws ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$LB_INSTANCES']" --output text)
     echo -e -n "${GREEN}\nConnecting to instance ${ARR_INSTANCES[${NUMBER}]} on ${HOST}${NC}" && test ! -z "${COMMAND}" && echo -e "${GREEN}\n and running '${COMMAND}'...${NC}"
     if [ "${SFTP}" = "TRUE" ]; then
       echo -e "${GREEN}\n> sftp -i ${KEY} ${USER}@${HOST}\n${NC}"
@@ -279,7 +255,7 @@ function aws_connect()
   elif [ "${#ARR_INSTANCES[@]}" -gt 1 ]; then
     echo -e "${GREEN}\n\nThere are ${#ARR_INSTANCES[@]} running instances on load balancer '${LB}'.${NC}"
     if [ ! -z "${NUMBER}" ]; then
-      HOST=$(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['${ARR_INSTANCES[${NUMBER}]}']" --output text)
+      HOST=$(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['${ARR_INSTANCES[${NUMBER}]}']" --output text)
       echo -e -n "${GREEN}\nConnecting to instance ${ARR_INSTANCES[${NUMBER}]} on ${HOST}${NC}" && test ! -z "${COMMAND}" && echo -e "${GREEN} and running '${COMMAND}'...${NC}"
       if [ "${SFTP}" = "TRUE" ]; then
         echo -e "${GREEN}\n> sftp -i ${KEY} ${USER}@${HOST}\n${NC}"
@@ -297,8 +273,8 @@ function aws_connect()
     declare -a INSTANCES=() && declare -a INSTANCEIPS=() && declare -a INSTANCE_LABELS=()
     for ec2Instance in $LB_INSTANCES
     do
-      INSTANCEIPS=("${INSTANCEIPS[@]}" $(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text))
-      INSTANCE_LABELS=("${INSTANCE_LABELS[@]}" "$(${awsBin} ec2 describe-instances ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)")
+      INSTANCEIPS=("${INSTANCEIPS[@]}" $(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].PublicIpAddress" --filters "Name=instance-id,Values=['$ec2Instance']" --output text))
+      INSTANCE_LABELS=("${INSTANCE_LABELS[@]}" "$(${awsBin} ec2 describe-instances --profile ${PROFILE} --query "Reservations[].Instances[].Tags[?Key=='Name'].Value[]" --filters "Name=instance-id,Values=['$ec2Instance']" --output text)")
     done
 
     i=0
