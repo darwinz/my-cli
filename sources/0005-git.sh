@@ -7,6 +7,8 @@
 # one-line log
 git config --global alias.l 'log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short'
 
+git config --global alias.rp 'rev-parse'
+
 git config --global alias.a add
 git config --global alias.ap 'add -p'
 git config --global alias.c 'commit --verbose'
@@ -22,8 +24,17 @@ git config --global alias.dl '!git ll -1'
 git config --global alias.dlc 'diff --cached HEAD^'
 
 git config --global alias.s 'status -s'
+git config --global alias.sh show
 git config --global alias.co checkout
 git config --global alias.cob 'checkout -b'
+
+git config --global alias.sq 'rebase -i'
+
+git config --global alias.pl 'pull origin'
+git config --global alias.pu 'push origin'
+
+git config --global alias.cf 'clean -f'
+git config --global alias.cdf 'clean -d -f'
 
 # list branches sorted by last modified
 git config --global alias.b "!git for-each-ref --sort='-authordate' --format='%(authordate)%09%(objectname:short)%09%(refname)' refs/heads | sed -e 's-refs/heads/--'"
