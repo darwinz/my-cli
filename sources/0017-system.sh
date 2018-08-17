@@ -86,6 +86,15 @@ function openPorts()
   sudo lsof -i | grep LISTEN
 }
 
+function usedPort()
+{
+  port=$1
+  if [[ "$#" < 1 ]]; then
+    read -p "Which port? " port
+  fi
+  lsof +c 15 -nP -i4TCP:${port} | grep LISTEN
+}
+
 ##  Gets all ipfw rules including blocked IPs
 function showBlocked()
 {
