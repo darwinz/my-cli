@@ -212,6 +212,7 @@ function available_commands()
       echo -e "${CYAN} > ipInfo0\t\t ${NC}Gets info on connections for en0"
       echo -e "${CYAN} > ipInfo1\t\t ${NC}Gets info on connections for en1"
       echo -e "${CYAN} > openPorts\t\t ${NC}Gets a list of all listening connections"
+      echo -e "${CYAN} > usedPort [port]\t\t ${NC}Display info about any open file (process) on a given port"
       echo -e "${CYAN} > showBlocked\t\t ${NC}Gets all ipfw rules including blocked IPs"
       echo -e "${CYAN} > hardware\t\t ${NC}List system hardware"
       echo -e "${CYAN} > cleanupDS\t\t ${NC}Delete .DS_Store files from current working directory recursively"
