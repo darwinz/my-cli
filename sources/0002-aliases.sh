@@ -9,8 +9,10 @@ alias cic='set completion-ignore-case On'
 alias k='kubectl'
 alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
-alias kgl='kubectl logs -f'
+alias klf='kubectl logs -f'
 alias bi='bundle install'
+alias bu='bundle update'
+alias gi='gem install'
 alias brake='bundle exec rake'
 
 alias numFiles="echo $(ls -1 | wc -l)"
