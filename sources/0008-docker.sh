@@ -16,6 +16,10 @@ docker_host() {
 	echo $DOCKER_HOST
 }
 
+docker_login() {
+    aws ecr get-login --region us-east-1  | sed 's/-e none //' | bash
+}
+
 ## Force remove docker images
 docker_remove_images() {
 	docker rmi $(docker images -q)

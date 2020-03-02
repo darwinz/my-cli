@@ -6,11 +6,11 @@ do
   key="$1"
 
   case $key in
-    -q|--silent)
-      SILENT="TRUE"
+    -f|--full)
+      FULL="TRUE"
       ;;
     -h|--h|*help|*)
-      echo "Arguments silent (-q|--silent), install api2 (-a|--api2), api2 branch other than master (-ab|--api2-branch)"
+      echo "Arguments full (-f|--full)"
       kill -INT $$
       ;;
   esac
@@ -35,13 +35,17 @@ fi
 user_dir=$(cd ~ && pwd)
 OPWD=$PWD
 
-if [ -z "${SILENT}" ]; then
+if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/mixins.sh
   source ${thisDir}/install/xcode.sh
   source ${thisDir}/install/brew.sh
-  source ${thisDir}/install/composer.sh
+  source ${thisDir}/install/docker.sh
   source ${thisDir}/install/npm.sh
   source ${thisDir}/install/fonts.sh
+  source ${thisDir}/install/docker.sh
+  source ${thisDir}/install/kubernetes.sh
+  source ${thisDir}/install/python.sh
+  source ${thisDir}/install/ruby.sh
 fi
 
 function clean_bash_profile()

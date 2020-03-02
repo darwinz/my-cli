@@ -58,6 +58,9 @@ git config --global alias.prl '!gh pr list'
 # list aliases
 git config --global alias.la "!git config -l | grep alias | cut -c 7-"
 
+# list commits to branches in a nice format
+git config --global alias.cbb "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
+
 ###############################################################
 #################      End Git Aliases       ##################
 ###############################################################
