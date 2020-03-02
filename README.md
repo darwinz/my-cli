@@ -223,6 +223,7 @@ $ mycli zend_restart_all
 | `ipInfo0` | Gets info on connections for en0 | |
 | `ipInfo1` | Gets info on connections for en1 | |
 | `openPorts` | Gets a list of all listening connections | |
+| `usedPort` | Shows information about any files (process) open on a given port | $1 = port |
 | `showBlocked` | Gets all ipfw rules including blocked IPs | |
 | `hardware` | List system hardware | |
 | `cleanupDS` | Delete .DS_Store files from current working directory recursively | |

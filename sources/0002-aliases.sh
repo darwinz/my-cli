@@ -4,23 +4,17 @@
 ################  General Aliases ##################
 ####################################################
 
-user_dir=$(builtin cd ~ && pwd)
-
-RED='\033[0;31m'
-BLUE='\033[0;34m'
-BLACK='\033[0;30m'
-GREEN='\033[0;32m'
-CYAN='\033[0;36m'
-PURPLE='\033[0;35m'
-BROWN='\033[0;33m'
-LIGHT_GREY='\033[0;37m'
-DARK_GREY='\033[0;30m'
-YELLOW='\033[0;33m'
-WHITE='\033[0;37m'
-NC='\033[0m' # No Color
-
+alias cic='set completion-ignore-case On'
 alias ll='ls -alh'
 alias cic='set completion-ignore-case On'
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgd='kubectl get deployments'
+alias klf='kubectl logs -f'
+alias bi='bundle install'
+alias bu='bundle update'
+alias gi='gem install'
+alias brake='bundle exec rake'
 alias addkey='eval $(ssh-agent) && ssh-add'
 alias dirsizes='du -sch ./*'
 function watchfile() {
@@ -48,6 +42,11 @@ if [ "${whichOS}" = "Darwin" ]; then
     echo
   }
 fi
+
+function be
+{
+  bundle exec "$@"
+}
 
 ########################################################
 ################  End General Aliases ##################

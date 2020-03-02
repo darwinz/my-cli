@@ -176,7 +176,7 @@ do
   fi
 
   # Add general and git aliases to the bash profile
-  if [ "${f}" = "0002-aliases.sh" ] || [ "${f}" = "0005-git.sh" ]; then
+  if [ "${f}" = "0001-environment.sh" ] || [ "${f}" = "0002-aliases.sh" ] || [ "${f}" = "0005-git.sh" ]; then
     tail -n +2 "./sources/${f}" >> ${user_dir}/.mycli
   fi
 done
