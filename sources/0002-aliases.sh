@@ -19,8 +19,13 @@ YELLOW='\033[0;33m'
 WHITE='\033[0;37m'
 NC='\033[0m' # No Color
 
-alias ll='ls -al'
+alias ll='ls -alh'
 alias cic='set completion-ignore-case On'
+alias addkey='eval $(ssh-agent) && ssh-add'
+alias dirsizes='du -sch ./*'
+function watchfile() {
+  'watch -n 1 "cat $1"'
+}
 
 alias numFiles="echo $(ls -1 | wc -l)"
 alias qfind="find . -name "

@@ -120,3 +120,8 @@ function finderHideHidden()
 {
   defaults write com.apple.finder ShowAllFiles FALSE
 }
+
+function ping_ipv6()
+{
+  ping6 -I en0 ff02::1
+}

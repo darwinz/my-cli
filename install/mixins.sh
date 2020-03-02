@@ -51,6 +51,25 @@ function ni() {
   fi
 }
 
+function pi() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $1 package? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'pip install' $1
+      pip install $1
+    else
+      echo "skipped pip install $1"
+    fi
+  else
+    echo 'pip install' $1
+    pip install $1
+  fi
+}
+
 function gi() {
   small_separator
   if [[ "$2" != true ]]
