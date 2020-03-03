@@ -13,6 +13,7 @@ brew upgrade
 bi node true
 bi rbenv true
 bi pyenv true
+bi pyenv-virtualenv
 bi jenv true
 bi Caskroom/cask/java true
 bi git true
