@@ -4,7 +4,7 @@
 #################### Program Setup and Usage Docs (Must Be Last) ####################
 #####################################################################################
 
-version="0.0.2"
+version="0.1.0"
 
 if [ "${whichOS}" = "Darwin" ]; then
   thisDir=$(builtin cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)

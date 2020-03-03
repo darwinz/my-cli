@@ -4,14 +4,22 @@
 ################  General Aliases ##################
 ####################################################
 
-alias ll='ls -al'
+alias cic='set completion-ignore-case On'
+alias ll='ls -alh'
 alias cic='set completion-ignore-case On'
 alias k='kubectl'
 alias kgp='kubectl get pods'
 alias kgd='kubectl get deployments'
-alias kgl='kubectl logs -f'
+alias klf='kubectl logs -f'
 alias bi='bundle install'
+alias bu='bundle update'
+alias gi='gem install'
 alias brake='bundle exec rake'
+alias addkey='eval $(ssh-agent) && ssh-add'
+alias dirsizes='du -sch ./*'
+function watchfile() {
+  'watch -n 1 "cat $1"'
+}
 
 alias numFiles="echo $(ls -1 | wc -l)"
 alias qfind="find . -name "
