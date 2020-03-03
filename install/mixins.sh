@@ -70,6 +70,31 @@ function pi() {
   fi
 }
 
+function pyi() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install python version $1? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'pyenv install' $1
+      CFLAGS="-I$(brew --prefix readline)/include -I$(brew --prefix openssl)/include -I$(xcrun --show-sdk-path)/usr/include" \
+LDFLAGS="-L$(brew --prefix readline)/lib -L$(brew --prefix openssl)/lib" \
+PYTHON_CONFIGURE_OPTS=--enable-unicode=ucs2 \
+pyenv install -v $1
+    else
+      echo "skipped pyenv install $1"
+    fi
+  else
+    echo 'pyenv install' $1
+    CFLAGS="-I$(brew --prefix readline)/include -I$(brew --prefix openssl)/include -I$(xcrun --show-sdk-path)/usr/include" \
+LDFLAGS="-L$(brew --prefix readline)/lib -L$(brew --prefix openssl)/lib" \
+PYTHON_CONFIGURE_OPTS=--enable-unicode=ucs2 \
+pyenv install -v $1
+  fi
+}
+
 function gi() {
   small_separator
   if [[ "$2" != true ]]
@@ -86,6 +111,25 @@ function gi() {
   else
     echo 'sudo gem install' $1
     sudo gem install $1
+  fi
+}
+
+function rbi() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install ruby version $1? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'rbenv install' $1
+      rbenv install $1
+    else
+      echo "skipped rbenv install $1"
+    fi
+  else
+    echo 'rbenv install' $1
+    rbenv install $1
   fi
 }
 

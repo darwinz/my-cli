@@ -1,12 +1,13 @@
 #!/bin/sh
 
 separator
-echo "install python 3.7.6..."
-pyenv install 3.7.6
+pyi 3.7.6
 
 small_separator
-echo "install python 3.8.1..."
-pyenv install 3.8.1
+pyi 3.8.1
+
+echo 'Setting python 3.7.6 as the global version...'
+pyenv global 3.7.6
 
 pi poetry true
 pi click true

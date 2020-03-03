@@ -9,6 +9,9 @@ do
     -f|--full)
       FULL="TRUE"
       ;;
+    -s|--shell)
+      SHELL="${@:2}"
+      ;;
     -h|--h|*help|*)
       echo "Arguments full (-f|--full)"
       kill -INT $$
@@ -42,7 +45,6 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/docker.sh
   source ${thisDir}/install/npm.sh
   source ${thisDir}/install/fonts.sh
-  source ${thisDir}/install/docker.sh
   source ${thisDir}/install/kubernetes.sh
   source ${thisDir}/install/python.sh
   source ${thisDir}/install/ruby.sh
@@ -115,16 +117,40 @@ function patch_bash_profile()
   done
 }
 
+function patch_zsh()
+{
+  f="${user_dir}/.zshrc"
+  if [ ! -e "${f}" ]; then
+    touch ${f}
+  fi
+  ZSHRC_CONTENTS="$(cat ${f})"
+
+  [[ $ZSHRC_CONTENTS != *${user_dir}/.mycli* ]] && echo "source ${user_dir}/.mycli" >> ${f}
+  if [ "${whichOS}" = "Darwin" ]; then
+    [[ $ZSHRC_CONTENTS != *bash_completion* ]] && echo '[ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion' >> ${f}
+  else
+    [[ $ZSHRC_CONTENTS != *bash_completion* ]] && echo '[ -f /etc/bash_completion ] && source /etc/bash_completion' >> ${f}
+  fi
+  if [ ! -z "${NVM_INSTALLED}" ]; then
+    [[ "${ZSHRC_CONTENTS}" != *"NVM_DIR"* ]] && echo 'export NVM_DIR="$HOME/.nvm"' >> ${f} && \
+      echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm' >> ${f}
+  fi
+  if [ ! -z "${NODE_INSTALLED}" ]; then
+    [[ "${ZSHRC_CONTENTS}" != *"NODE_ENV"* ]] && echo "export NODE_ENV=\"local\"" >> ${f}
+    [[ "${ZSHRC_CONTENTS}" != *"NODE_CONFIG_DIR"* ]] && echo "export NODE_CONFIG_DIR=\"${user_dir}/Projects/node_config\"" >> ${f}
+  fi
+}
+
 function setup_nvm()
 {
   if [ ! -d "~/.nvm" ]; then
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.35.2/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
     export NVM_INSTALLED="TRUE"
   else
     rm -rf ~/.nvm
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.35.2/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
   fi
@@ -188,7 +214,12 @@ done
 tail -n +2 "./install/program.sh" >> bin/mycli
 
 setup_nvm
-patch_bash_profile
+
+if [ "${SHELL}" = "bash" ]; then
+  patch_bash_profile
+else
+  patch_zsh
+fi
 
 ## Install MyCLI in /usr/local/bin/mycli
 make install || { echo >&2 "Clone failed with $?"; exit 1; }
