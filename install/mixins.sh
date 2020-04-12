@@ -34,7 +34,7 @@ function bi() {
 
 function bt() {
   small_separator
-  if [[ "$2" != true ]]
+  if [[ "$3" != true ]]
   then
     read -r -p "Do you want to install $2? [y/N] " response
     response=${response}
