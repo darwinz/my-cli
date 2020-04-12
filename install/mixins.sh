@@ -32,6 +32,29 @@ function bi() {
   fi
 }
 
+function bt() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $2? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'brew tap' $1
+      brew tap $1
+      echo 'brew install' $2
+      brew install $2
+    else
+      echo "skipped brew install $2"
+    fi
+  else
+    echo 'brew tap' $1
+    brew tap $1
+    echo 'brew install' $2
+    brew install $2
+  fi
+}
+
 function ni() {
   small_separator
   if [[ "$2" != true ]]
