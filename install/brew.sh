@@ -35,3 +35,4 @@ bi k9s
 bi hub
 bi github/gh/gh
 
+bt "homebrew/cask-fonts" font-hack-nerd-font

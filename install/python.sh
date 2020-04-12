@@ -16,4 +16,5 @@ pi mockito
 pi requests true
 pi environs true
 pi elasticsearch
+pi pymemcache
 
