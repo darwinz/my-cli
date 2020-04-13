@@ -43,7 +43,7 @@ function bt() {
       echo 'brew tap' $1
       brew tap $1
       echo 'brew install' $2
-      brew install $2
+      brew cask install $2
     else
       echo "skipped brew install $2"
     fi
@@ -51,7 +51,7 @@ function bt() {
     echo 'brew tap' $1
     brew tap $1
     echo 'brew install' $2
-    brew install $2
+    brew cask install $2
   fi
 }
 
