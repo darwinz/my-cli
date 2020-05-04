@@ -156,6 +156,12 @@ function setup_nvm()
   fi
 }
 
+function setup_rapture()
+{
+  wget https://github.com/daveadams/go-rapture/releases/download/v2.0.0/rapture-darwin-amd64 ~/Downloads/rapture-darwin-amd64
+  open ~/Downloads/rapture-darwin-amd64
+}
+
 function runCompile()
 {
   if [ "${whichOS}" = "Darwin" ]; then
@@ -214,6 +220,7 @@ done
 tail -n +2 "./install/program.sh" >> bin/mycli
 
 setup_nvm
+setup_rapture
 
 if [ "${SHELL}" = "bash" ]; then
   patch_bash_profile

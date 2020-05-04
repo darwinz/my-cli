@@ -34,5 +34,6 @@ bi watch
 bi k9s
 bi hub
 bi github/gh/gh
+bi vaulted
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
