@@ -2,13 +2,14 @@
 
 separator
 
-small_separator
-echo "Install kubernetes..."
-
-brew install minikube
-
-small_separator
-echo "Install kubectl..."
-
-brew install kubectl
-
+read -r -p "Do you want to install Kubernetes? [y/N] " response
+response=${response}
+if [[ $response =~ ^(yes|y)$ ]]
+then
+  echo "Installing Kubectl..."
+  brew install kubectl
+  echo "Installing minikube..."
+  brew install minikube
+else
+  echo "skipped install Kubernetes"
+fi
