@@ -158,8 +158,9 @@ function setup_nvm()
 
 function setup_rapture()
 {
-  wget https://github.com/daveadams/go-rapture/releases/download/v2.0.0/rapture-darwin-amd64 ~/Downloads/rapture-darwin-amd64
-  open ~/Downloads/rapture-darwin-amd64
+  wget -P ~/Downloads/ https://github.com/daveadams/go-rapture/releases/download/v2.0.0/rapture-darwin-amd64
+  mv ~/Downloads/rapture-darwin-amd64 /usr/local/bin/rapture
+  chmod u+x /usr/local/bin/rapture
 }
 
 function runCompile()
