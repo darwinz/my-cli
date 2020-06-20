@@ -21,6 +21,8 @@ bi git-flow true
 bi git bash-completion true
 bi wget true
 bi jq true
+bi ncdu true
+bi tldr true
 bi bash-completion true
 bi mongodb
 bi mongo
