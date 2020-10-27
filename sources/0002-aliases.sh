@@ -16,6 +16,7 @@ alias bi='`rbenv which bundle` install'
 alias bu='`rbenv which bundle` update'
 alias gi='`rbenv which gem` install'
 alias brake='`rbenv which bundle` exec rake'
+alias be='bundle exec'
 alias addkey='eval $(ssh-agent) && ssh-add'
 alias dirsizes='du -sch ./*'
 function watchfile() {
@@ -42,12 +43,18 @@ if [ "${whichOS}" = "Darwin" ]; then
     #echo -e "\n${RED}DNS Configuration:${NC} " ; scutil --dns
     echo
   }
+
+  pyenv_virtualenv_new() {
+    if [ "$#" -lt 1 ]; then
+      read -p "Which python version? " pyenv_version
+      read -p "What is the environment name? " virtualenv_name
+    fi
+    pyenv virtualenv ${pyenv_version} ${virtualenv_name}
+  }
+
+  alias sys_info='`system_info`'
 fi
 
-function be
-{
-  bundle exec "$@"
-}
 
 ########################################################
 ################  End General Aliases ##################

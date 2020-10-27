@@ -22,21 +22,22 @@ bi git-flow true
 bi git bash-completion true
 bi wget true
 bi jq true
+bi yq true
 bi ncdu true
 bi tldr true
 bi bash-completion true
-bi mongodb
 bi mongo
 bi redis
 bi imagemagick
 bi awscli
-bi awsebcli
 bi heroku
 bi ruby-build
 bi watch
 bi k9s
+bi fzf
 bi hub
-bi github/gh/gh
+bi gh
 bi vaulted
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
+bt "homebrew/cask" bitbar

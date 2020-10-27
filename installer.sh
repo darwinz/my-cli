@@ -48,7 +48,10 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/kubernetes.sh
   source ${thisDir}/install/python.sh
   source ${thisDir}/install/ruby.sh
+  source ${thisDir}/install/git.sh
+  setup_nvm
   setup_goenv
+  setup_rapture
   source ${thisDir}/install/go.sh
 fi
 
@@ -215,26 +218,25 @@ do
     echo "Adding source ${f} to mycli..."
     tail -n +2 "./sources/${f}" >> bin/mycli
   fi
-  if [ -f "./sources/${f}" ]; then
-    echo "Adding source ${f} to mycli..."
-    tail -n +2 "./sources/${f}" >> bin/mycli
-  fi
 
-  # Add general and git aliases to the bash profile
-  if [ "${f}" = "0001-environment.sh" ] || [ "${f}" = "0002-aliases.sh" ] || [ "${f}" = "0005-git.sh" ]; then
+  # Add environment and aliases to the shell profile
+  if [ "${f}" = "0001-environment.sh" ] || [ "${f}" = "0002-aliases.sh" ]; then
     tail -n +2 "./sources/${f}" >> ${user_dir}/.mycli
   fi
 done
 # Add the program contents to the mycli
 tail -n +2 "./install/program.sh" >> bin/mycli
 
-setup_nvm
-setup_rapture
-
-if [ "${SHELL}" = "bash" ]; then
+if [[ "${SHELL}" = *"bash" ]]; then
   patch_bash_profile
 else
   patch_zsh
+
+  # Install oh-my-zsh
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  # Install forgit
+  hub clone wfxr/forgit $HOME/.oh-my-zsh/plugins/forgit/
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
@@ -249,5 +251,7 @@ elif [ -L "/usr/local/bin/mcli" ]; then
   unlink /usr/local/bin/mcli
 fi
 ln -s /usr/local/bin/mycli /usr/local/bin/mcli
+
+exec $SHELL
 
 cd $OPWD
