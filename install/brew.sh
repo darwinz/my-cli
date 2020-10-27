@@ -14,6 +14,7 @@ bi node true
 bi rbenv true
 bi pyenv true
 bi pyenv-virtualenv
+bi goenv
 bi jenv true
 bi Caskroom/cask/java true
 bi git true

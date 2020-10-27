@@ -118,6 +118,44 @@ pyenv install -v $1
   fi
 }
 
+function gg() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $1 package? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'go get' $1
+      go get $1
+    else
+      echo "skipped go get $1"
+    fi
+  else
+    echo 'go get' $1
+    go get $1
+  fi
+}
+
+function gei() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install go version $1? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'goenv install' $1
+      goenv install -v $1
+    else
+      echo "skipped goenv install $1"
+    fi
+  else
+    echo 'goenv install' $1
+    goenv install -v $1
+  fi
+}
+
 function gi() {
   small_separator
   if [[ "$2" != true ]]

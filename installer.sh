@@ -48,6 +48,8 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/kubernetes.sh
   source ${thisDir}/install/python.sh
   source ${thisDir}/install/ruby.sh
+  setup_goenv
+  source ${thisDir}/install/go.sh
 fi
 
 function clean_bash_profile()
@@ -154,6 +156,12 @@ function setup_nvm()
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
   fi
+}
+
+function setup_goenv()
+{
+  git clone https://github.com/syndbg/goenv.git $HOME/.goenv
+  mkdir -p $HOME/go
 }
 
 function setup_rapture()
