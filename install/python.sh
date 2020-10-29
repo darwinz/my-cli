@@ -6,8 +6,13 @@ pyi 3.7.6
 small_separator
 pyi 3.8.1
 
+small_separator
+pyi 2.7.17
+
 echo 'Setting python 3.7.6 as the global version...'
-pyenv global 3.7.6
+pyenv virtualenv 3.7.6 defaultenv
+pyenv global defaultenv 2.7.17
+pyenv activate
 
 pi pipenv true
 pi awscli true
