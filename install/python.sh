@@ -9,12 +9,22 @@ pyi 3.8.1
 echo 'Setting python 3.7.6 as the global version...'
 pyenv global 3.7.6
 
-pi poetry true
+pi pipenv true
+pi awscli true
+pi botocore true
+pi boto3 true
 pi click true
-pi jmespath true
-pi mockito
+pi jmespath
 pi requests true
 pi environs true
 pi elasticsearch
-pi pymemcache
+pi pymemcache true
+pi black true
+pi flake8 true
+pi pandas
+pi pyspark
+pi pre-commit true
+pi redis true
+pi pytz true
+pi ~/Projects/powerline-shell/ true
 

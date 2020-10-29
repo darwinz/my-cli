@@ -41,3 +41,4 @@ bi vaulted
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
+bt "teamookla/speedtest" speedtest
