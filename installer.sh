@@ -51,7 +51,9 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/git.sh
   setup_nvm
   setup_goenv
+  setup_jenv
   setup_rapture
+  setup_spark
   source ${thisDir}/install/go.sh
 fi
 
@@ -161,6 +163,14 @@ function setup_nvm()
   fi
 }
 
+function setup_jenv()
+{
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-10.jdk/Contents/Home
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-9.jdk/Contents/Home
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+  jenv global 10.0.2
+}
+
 function setup_goenv()
 {
   git clone https://github.com/syndbg/goenv.git $HOME/.goenv
@@ -172,6 +182,15 @@ function setup_rapture()
   wget -P ~/Downloads/ https://github.com/daveadams/go-rapture/releases/download/v2.0.0/rapture-darwin-amd64
   mv ~/Downloads/rapture-darwin-amd64 /usr/local/bin/rapture
   chmod u+x /usr/local/bin/rapture
+}
+
+function setup_spark()
+{
+  sudo mkdir -p /usr/local/spark
+  sudo chown $(whoami) /usr/local/spark
+  wget -P ~/Downloads/ https://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.6.tgz
+  tar xzvf ~/Downloads/spark-2.4.3-bin-hadoop2.6.tgz -C /usr/local/spark/
+  ln -s /usr/local/spark/spark-2.4.3-bin-hadoop2.6 /usr/local/spark/current
 }
 
 function runCompile()
@@ -236,7 +255,9 @@ else
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   # Install forgit
-  hub clone wfxr/forgit $HOME/.oh-my-zsh/plugins/forgit/
+  hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # Install zsh-syntax-highlighting
+  hub clone zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli

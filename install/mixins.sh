@@ -74,6 +74,25 @@ function ni() {
   fi
 }
 
+function yi() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $1 yarn package? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'yarn global add' $1
+      yarn global add $1
+    else
+      echo "skipped yarn global add $1"
+    fi
+  else
+    echo 'yarn global add' $1
+    yarn global add $1
+  fi
+}
+
 function pi() {
   small_separator
   if [[ "$2" != true ]]
