@@ -4,7 +4,13 @@
 
 ## Install
 
-You can install it either by cloning and manually installing it
+Install by either cloning and running 
+
+```bash
+make install
+``` 
+
+Or by running the following
 
 ```bash
 $ git clone git@github.com:darwinz/My-CLI.git --depth=1 && cd My-CLI && ./installer.sh && cd .. && rm -rf My-CLI || echo >&2 "Clone or install failed with $?" && kill -INT $$

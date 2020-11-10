@@ -261,7 +261,7 @@ else
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
-make install || { echo >&2 "Clone failed with $?"; exit 1; }
+#make install || { echo >&2 "Clone failed with $?"; exit 1; }
 
 ## Create alias mcli
 if [ -f "/usr/local/bin/mcli" ]; then
