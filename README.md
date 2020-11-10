@@ -4,19 +4,11 @@
 
 ## Install
 
-Install by either cloning and running 
+Install by cloning and running 
 
 ```bash
 make install
-``` 
-
-Or by running the following
-
-```bash
-$ git clone git@github.com:darwinz/My-CLI.git --depth=1 && cd My-CLI && ./installer.sh && cd .. && rm -rf My-CLI || echo >&2 "Clone or install failed with $?" && kill -INT $$
 ```
-
-
 
 ## Usage
 
@@ -33,10 +25,8 @@ $ mycli docker
 $ mycli mysql
 $ mycli aws_connect -a app1 -e dev1
 $ mycli acd_backup
-$ mycli apcheEdit
 $ mycli docker_images
 $ mycli cpu_hogs
-$ mycli zend_restart_all
 ```
 
 
@@ -50,7 +40,6 @@ $ mycli zend_restart_all
 > `file_operations`
 > `git`
 > `acd`
-> `apache`
 > `docker`
 > `elasticsearch`
 > `misc`
@@ -62,7 +51,6 @@ $ mycli zend_restart_all
 > `ruby`
 > `system`
 > `vpn`
-> `zend`
 
 ### Help / Commands List
 
@@ -107,27 +95,6 @@ $ mycli zend_restart_all
 | `ffe $1`  | Find file whose name ends with {$1} under the current working dir | $1 = Search query |
 
 
-#### Git
-
-| Git Alias  | Description |
-| ------------- | ------------- |
-| `git a`  | Alias for *git add* |
-| `git ap`  | Alias for *git add -p* |
-| `git c`  | Alias for *git commit --verbose* |
-| `git ca`  | Alias for *git commit -a --verbose* |
-| `git cm`  | Alias for *git commit -m* |
-| `git cam`  | Alias for *git commit -a -m* |
-| `git m`  | Alias for *git commit --amend --verbose* |
-| `git d`  | Alias for *git diff* |
-| `git ds`  | Alias for *git diff --stat* |
-| `git dc`  | Alias for *git diff --cached* |
-| `git s`  | Alias for *git status -s* |
-| `git co`  | Alias for *git checkout* |
-| `git cob`  | Alias for *git checkout -b* |
-| `git b`  | List git branches sorted by last modified |
-| `git la`  | List git aliases |
-
-
 #### Amazon Cloud Drive (ACD)
 
 | Command  | Description | Arguments |
@@ -135,21 +102,6 @@ $ mycli zend_restart_all
 | `acd_backup [volume/path] [acd_dir]`  | Alias for *git add* | $1 = Local dir path to backup, $2 = Dir path on remote ACD |
     
     
-#### Apache
-
-| Command  | Description | Arguments |
-| ------------- | ------------- | ------------- |
-| `apacheEdit` | Alias for opening /etc/apache2/apache2.conf in default editor | |
-| `apacheRestart` | Alias for restarting apache2 service | |
-| `editHosts` | Alias for opening /etc/hosts in default editor | |
-| `herr` | Tail the httpd error log. Alias for 'tail /var/log/httpd/error_log' | |
-| `apacheLogs` | Alias for 'less +F /var/log/apache2/error_log' | |
-| `display_errors_on` | Set display_errors to On in /etc/php5/apach2/php.ini | |
-| `display_errors_off` | Set display_errors to Off in /etc/php5/apach2/php.ini | |
-| `httpHeaders [Uri]` | Get HTTP headers for specified remote web page URI | $1 = remote uri to test |
-| `httpDebug [Uri]` | Download a remote web page for a specified URI and show info on what took time | $1 = remote uri to test |
-
-
 #### Docker
 
 | Command  | Description | Arguments |
@@ -242,23 +194,4 @@ $ mycli zend_restart_all
 | Command  | Description | Arguments |
 | ------------- | ------------- | ------------- |
 | `vpn_connect` | Opens Cisco AnyConnect client, enters username and password and connects | |
-
-
-#### Zend
-
-| Command  | Description | Arguments |
-| ------------- | ------------- | ------------- |
-| `zend_set_paths` | Sets the Zend paths in $PATH and $CDPATH | |
-| `zend_restart_all` | Restart all zend server services | |
-| `zend_restart_apache` | Restart zend apache | |
-| `zend_restart_mysql` | Restart zend mysql | |
-| `zend_vhosts_dir` | Output zend vhosts directory | |
-| `zend_sites_dir` | Output zend available sites directory | |
-| `llzv` | List contents of zend vhosts directory | |
-| `llzs` | List contents of zend available sites directory | |
-| `cdzv` | Change directory to Zend Server vhosts directory | |
-| `cdzs` | Change directory to Zend Server available sites directory | |
-| `vimzv [sitename]` | Open vhost for \[sitename\] in vim | $1 = name of site/vhost file to edit |
-| `vimhttpd` | Open apache conf in vim | |
-| `vimphpini` | Open php.ini in vim | |
 
