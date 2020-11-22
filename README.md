@@ -38,7 +38,6 @@ $ mycli cpu_hogs
 > `aliases`
 > `aws`
 > `file_operations`
-> `git`
 > `acd`
 > `docker`
 > `elasticsearch`
