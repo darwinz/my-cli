@@ -13,7 +13,7 @@ do
       SHELL="${@:2}"
       ;;
     -h|--h|*help|*)
-      echo "Arguments full (-f|--full)"
+      echo "Arguments full (-f|--full), shell (-s|--shell)"
       kill -INT $$
       ;;
   esac
