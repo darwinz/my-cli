@@ -40,6 +40,8 @@ bi gh
 bi vaulted
 bi yarn
 bi neovim
+bi tfenv
+bi bat
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
