@@ -42,6 +42,7 @@ bi yarn
 bi neovim
 bi tfenv
 bi bat
+bi stern
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
