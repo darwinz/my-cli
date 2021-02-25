@@ -17,6 +17,7 @@ git config --global alias.c 'commit --verbose'
 git config --global alias.ca 'commit -a --verbose'
 git config --global alias.cm 'commit -m'
 git config --global alias.cam 'commit -a -m'
+git config --global alias.cma 'commit --amend --no-edit -m'
 git config --global alias.m 'commit --amend --verbose'
 
 git config --global alias.d diff
@@ -66,6 +67,9 @@ git config --global alias.ffs "!git flow feature start"
 git config --global alias.fff "!git flow feature finish"
 git config --global alias.frs "!git flow release start"
 git config --global alias.frf "!git flow release finish"
+
+# traversal
+git config --global alias.root "rev-parse --show-toplevel"
 
 ###############################################################
 #################      End Git Aliases       ##################
