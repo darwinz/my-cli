@@ -41,6 +41,7 @@ git config --global alias.sq 'rebase -i'
 
 git config --global alias.pl 'pull'
 git config --global alias.pu 'push'
+git config --global alias.puf 'push --force-with-lease'
 
 git config --global alias.cf 'clean -f'
 git config --global alias.cdf 'clean -d -f'
