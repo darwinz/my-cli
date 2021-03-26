@@ -6,7 +6,7 @@
 
 alias cic='set completion-ignore-case On'
 alias ll='ls -alh'
-alias lc='colorls -a -l'
+alias lc='colorls -a -l --dark --gs'
 alias cic='set completion-ignore-case On'
 alias k='kubectl'
 alias kgp='kubectl get pods'
