@@ -7,6 +7,7 @@
 alias cic='set completion-ignore-case On'
 alias ll='ls -alh'
 alias lc='colorls -a -l --dark --gs'
+alias le='exa -alh -t modified --group-directories-first --git --tree --level=2 --color-scale --color=always'
 alias cic='set completion-ignore-case On'
 alias k='kubectl'
 alias kgp='kubectl get pods'
