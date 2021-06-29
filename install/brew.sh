@@ -14,6 +14,7 @@ bi node true
 bi rbenv true
 bi pyenv true
 bi pyenv-virtualenv
+bi goenv
 bi jenv true
 bi Caskroom/cask/java true
 bi git true
@@ -21,17 +22,32 @@ bi git-flow true
 bi git bash-completion true
 bi wget true
 bi jq true
+bi yq true
+bi ncdu true
+bi tldr true
 bi bash-completion true
-bi mongodb
 bi mongo
 bi redis
 bi imagemagick
 bi awscli
-bi awsebcli
 bi heroku
 bi ruby-build
 bi watch
 bi k9s
+bi fzf
 bi hub
-bi github/gh/gh
+bi gh
+bi vaulted
+bi yarn
+bi neovim
+bi tfenv
+bi bat
+bi stern
+bi exa
 
+bt "homebrew/cask-fonts" font-hack-nerd-font
+bt "homebrew/cask" bitbar
+bt "teamookla/speedtest" speedtest
+bt "adoptopenjdk/openjdk" adoptopenjdk8
+bt "adoptopenjdk/openjdk" adoptopenjdk9
+bt "adoptopenjdk/openjdk" adoptopenjdk10

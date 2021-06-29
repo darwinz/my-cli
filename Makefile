@@ -16,7 +16,7 @@ all:
 
 install:
 	mkdir -p $(bindir)
-	install -m 0755 $(EXEC_FILES) $(bindir)
+	./installer.sh -f
 
 uninstall:
 	test -d $(bindir) && \

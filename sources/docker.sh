@@ -30,6 +30,16 @@ docker_remove_processes() {
 	docker rm -f $(docker ps -a -q)
 }
 
+docker_remove_processes_by_filter() {
+  if [ "$#" -lt 1 ]; then
+    read -p "What is the filter to use? " filter
+  else
+    filter=$1
+  fi
+
+  docker rm $(docker stop $(docker ps -a -q --filter ancestor=$filter --format="{{.ID}}"))
+}
+
 ## Display docker images
 docker_images() {
 	docker images

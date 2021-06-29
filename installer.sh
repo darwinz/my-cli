@@ -13,7 +13,7 @@ do
       SHELL="${@:2}"
       ;;
     -h|--h|*help|*)
-      echo "Arguments full (-f|--full)"
+      echo "Arguments full (-f|--full), shell (-s|--shell)"
       kill -INT $$
       ;;
   esac
@@ -48,6 +48,13 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/kubernetes.sh
   source ${thisDir}/install/python.sh
   source ${thisDir}/install/ruby.sh
+  source ${thisDir}/install/git.sh
+  setup_nvm
+  setup_goenv
+  setup_jenv
+  setup_rapture
+  setup_spark
+  source ${thisDir}/install/go.sh
 fi
 
 function clean_bash_profile()
@@ -156,6 +163,36 @@ function setup_nvm()
   fi
 }
 
+function setup_jenv()
+{
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-10.jdk/Contents/Home
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-9.jdk/Contents/Home
+  jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+  jenv global 10.0.2
+}
+
+function setup_goenv()
+{
+  git clone https://github.com/syndbg/goenv.git $HOME/.goenv
+  mkdir -p $HOME/go
+}
+
+function setup_rapture()
+{
+  wget -P ~/Downloads/ https://github.com/daveadams/go-rapture/releases/download/v2.0.0/rapture-darwin-amd64
+  mv ~/Downloads/rapture-darwin-amd64 /usr/local/bin/rapture
+  chmod u+x /usr/local/bin/rapture
+}
+
+function setup_spark()
+{
+  sudo mkdir -p /usr/local/spark
+  sudo chown $(whoami) /usr/local/spark
+  wget -P ~/Downloads/ https://archive.apache.org/dist/spark/spark-2.4.3/spark-2.4.3-bin-hadoop2.6.tgz
+  tar xzvf ~/Downloads/spark-2.4.3-bin-hadoop2.6.tgz -C /usr/local/spark/
+  ln -s /usr/local/spark/spark-2.4.3-bin-hadoop2.6 /usr/local/spark/current
+}
+
 function runCompile()
 {
   if [ "${whichOS}" = "Darwin" ]; then
@@ -200,29 +237,31 @@ do
     echo "Adding source ${f} to mycli..."
     tail -n +2 "./sources/${f}" >> bin/mycli
   fi
-  if [ -f "./sources/${f}" ]; then
-    echo "Adding source ${f} to mycli..."
-    tail -n +2 "./sources/${f}" >> bin/mycli
-  fi
 
-  # Add general and git aliases to the bash profile
-  if [ "${f}" = "0001-environment.sh" ] || [ "${f}" = "0002-aliases.sh" ] || [ "${f}" = "0005-git.sh" ]; then
+  # Add environment and aliases to the shell profile
+  if [ "${f}" = "0001-environment.sh" ] || [ "${f}" = "0002-aliases.sh" ]; then
     tail -n +2 "./sources/${f}" >> ${user_dir}/.mycli
   fi
 done
 # Add the program contents to the mycli
 tail -n +2 "./install/program.sh" >> bin/mycli
 
-setup_nvm
-
-if [ "${SHELL}" = "bash" ]; then
+if [[ "${SHELL}" = *"bash" ]]; then
   patch_bash_profile
 else
   patch_zsh
+
+  # Install oh-my-zsh
+  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  # Install forgit
+  hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # Install zsh-syntax-highlighting
+  hub clone zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
-make install || { echo >&2 "Clone failed with $?"; exit 1; }
+#make install || { echo >&2 "Clone failed with $?"; exit 1; }
 
 ## Create alias mcli
 if [ -f "/usr/local/bin/mcli" ]; then
@@ -233,5 +272,7 @@ elif [ -L "/usr/local/bin/mcli" ]; then
   unlink /usr/local/bin/mcli
 fi
 ln -s /usr/local/bin/mycli /usr/local/bin/mcli
+
+exec $SHELL
 
 cd $OPWD

@@ -2,7 +2,6 @@
 
 separator
 
-small_separator
 
 read -r -p "Do you want to install Kubernetes? [y/N] " response
 response=${response}
