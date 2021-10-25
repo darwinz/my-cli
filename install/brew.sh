@@ -44,6 +44,7 @@ bi tfenv
 bi bat
 bi stern
 bi exa
+bi peco
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
@@ -51,3 +52,4 @@ bt "teamookla/speedtest" speedtest
 bt "adoptopenjdk/openjdk" adoptopenjdk8
 bt "adoptopenjdk/openjdk" adoptopenjdk9
 bt "adoptopenjdk/openjdk" adoptopenjdk10
+bt "sachaos/todoist" todoist
