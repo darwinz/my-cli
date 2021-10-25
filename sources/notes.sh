@@ -63,3 +63,95 @@ forgit_cherry_pick=gcp
 forgit_rebase=grb
 forgit_fixupn\n\n"
 }
+
+function notes_k8s()
+{
+  echo -e "\nkubectl config get-contexts
+  kubectl config set-context {context}
+  kubectl -n {namespace} get pods
+  kubectl -n {namespace} exec -it {pod} -- bash
+  kubectl -n {namespace} get deployments
+  kubectl -n {namespace} get configmaps
+  kubectl -n {namespace} delete pod {pod}
+  kubectl -n {namespace} port-forward {pod} {ip}:{ip}
+  kubectl -n {namespace} describe pod {pod}
+  kubectl -n {namespace} scale --replicas={number} deployment {deployment}
+  kubectl -n {namespace} patch pvc {pvc-name} -p '{\"metadata\":{\"finalizers\": []}}' --type=merge
+  kubectl cluster-info
+  kubectl get secret {secret-name} -n {namespace} -o yaml
+  kubectl get secret {secret-name} -n {namespace} -o yaml | grep {some-search-value}
+  kubectl cp -c {container} {namespace}/{pod}:{full-remove-file-path} {local-file-path}
+  kubectl cp -c {container} {local-file-path} {namespace}/{pod}:{full-remote-file-path}\n\n"
+}
+
+function notes_helm()
+{
+  echo -e "\nhelm search hub prometheus-community --max-col-width 100
+  helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+  helm repo add prometheus https://prometheus-community.github.io/helm-charts
+  helm show values prometheus-community/prometheus
+  helm list -n {k8s-namespace}
+  helm delete prometheus -n {k8s-namespace}\n\n"
+}
+
+function notes_terraform()
+{
+  echo -e "\nterraform login
+  terraform init
+  terraform plan
+  terraform plan -out out/file/path
+  terraform apply -target module.path
+  terraform apply "plan/file/path"
+  terraform import module.path [...arguments]
+  terraform state list
+  terraform state show
+  terraform state show module.path
+  terraform state mv module.path new.module.path
+  terraform state rm module.path
+  terraform state pull
+  terraform state push
+  terraform validate
+  terraform fmt
+  terraform taint module.path
+
+  # dangerous/caution
+  terraform destroy -target module.path
+  terraform force-unlock {lock-id}\n\n"
+}
+
+function notes_gcloud()
+{
+  echo -e "\ngcloud init
+  gcloud init --console-only
+  gcloud auth login
+  gcloud config list
+  gcloud container clusters get-credentials {gcloud-project-id} --zone us-central1-a
+  gcloud components install docker-credential-gcr
+  gcloud auth configure-docker
+  gcloud container images list
+  gcloud container images list --repository={hostname}/{gcr-project-id}
+  gcloud container images list-tags
+  gcloud container images list-tags gcr.io/true-bit-256021/{gcr-project-id}
+  gcloud components install kubectl
+  gcloud compute addresses list\n\n"
+}
+
+function notes_packer()
+{
+  echo -e "\npacker init {packer-hcl-file}
+  packer build -var-file=./{packer-var-file} [-debug] [-on-error=ask] {packer-hcl-file}\n\n"
+}
+
+function notes_blackbox()
+{
+  echo -e "\nblackbox_initialize
+  gpg --list-keys
+  blackbox_addadmin {admin-gpg-key}
+  blackbox_register_new_file {filename}
+  blackbox_edit_start {gpg-encrypted-file-path}
+  blackbox_edit_end {edited-file}
+  blackbox_diff
+  blackbox_decrypt_all_files
+  blackbox_shred_all_files
+  blackbox_postdeploy\n\n"
+}
