@@ -72,6 +72,9 @@ git config --global alias.frf "!git flow release finish"
 # traversal
 git config --global alias.root "rev-parse --show-toplevel"
 
+# hub as git alias (for fugitive and vim-rhubarb)
+git config --global alias.hub '!hub'
+
 ###############################################################
 #################      End Git Aliases       ##################
 ###############################################################
