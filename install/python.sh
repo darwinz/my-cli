@@ -31,5 +31,5 @@ pi pyspark
 pi pre-commit true
 pi redis true
 pi pytz true
-pi ~/Projects/powerline-shell/ true
+p3i yq true
 

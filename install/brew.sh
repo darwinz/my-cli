@@ -23,7 +23,6 @@ bi git bash-completion true
 bi wget true
 bi jq true
 bi jo true
-bi yq true
 bi ncdu true
 bi tldr true
 bi bash-completion true

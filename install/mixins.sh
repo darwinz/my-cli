@@ -112,6 +112,25 @@ function pi() {
   fi
 }
 
+function p3i() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $1 package? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'pip3 install' $1
+      pip3 install $1
+    else
+      echo "skipped pip3 install $1"
+    fi
+  else
+    echo 'pip3 install' $1
+    pip3 install $1
+  fi
+}
+
 function pyi() {
   small_separator
   if [[ "$2" != true ]]
