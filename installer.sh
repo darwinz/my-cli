@@ -258,6 +258,8 @@ else
   hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
   # Install zsh-syntax-highlighting
   hub clone zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  # Install fzf-tab
+  hub clone Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
