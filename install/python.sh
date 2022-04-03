@@ -32,4 +32,5 @@ pi pre-commit true
 pi redis true
 pi pytz true
 p3i yq true
+p3i termtosvg
 
