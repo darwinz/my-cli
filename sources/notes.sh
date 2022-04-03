@@ -188,4 +188,35 @@ function notes_jo()
   }"
 }
 
+function notes_termtosvg()
+{
+  echo -e "\nhttps://github.com/nbedos/termtosvg\n"
+  echo -e "\n$ termtosvg
+  Recording started, enter "exit" command or Control-D to end
+  \n$ exit
+  Recording ended, file is /tmp/termtosvg_exp5nsr4.svg"
+}
+
+function notes_httpie()
+{
+  echo -e "\nhttps://httpie.io/docs/cli/examples\n"
+  echo -e "\nhttp PUT pie.dev/put X-API-Token:123 name=John
+  http -f POST pie.dev/post hello=World
+  http -v pie.dev/get
+  \n\n// Use https
+  https example.org
+  \n\n// Build and print a request without sending it
+  http --offline pie.dev/post hello=offline
+  \n\n// With authentication
+  http -a USERNAME POST https://api.github.com/repos/httpie/httpie/issues/83/comments body='HTTPie is awesome! :heart:'
+  \n\n// Upload a file
+  http pie.dev/post < files/data.json
+  \n\n// Download a file
+  http pie.dev/image/png > image.png
+  \n\n// Using named session to persist between requests
+  http --session=logged-in -a username:password pie.dev/get API-Key:123
+  http --session=logged-in pie.dev/headers
+  \n\n// Use query string params
+  http https://api.github.com/search/repositories q==httpie per_page==1
+}
 

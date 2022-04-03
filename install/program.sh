@@ -195,6 +195,8 @@ function available_commands()
       echo -e "${CYAN} > notes_packer :::: ${NC}Show notes about using packer on the command line"
       echo -e "${CYAN} > notes_blackbox :::: ${NC}Show notes about using blackbox commands"
       echo -e "${CYAN} > notes_jo :::: ${NC}Show notes about using jo for creating json objects"
+      echo -e "${CYAN} > notes_termtosvg :::: ${NC}Show notes about using termtosvg to create an animated svg of your terminal screen"
+      echo -e "${CYAN} > notes_httpie :::: ${NC}Show notes about using httpie to interact with APIs from command line"
       ;;
     redis)
       echo -e "${YELLOW}redis${NC}"
