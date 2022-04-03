@@ -185,8 +185,16 @@ function available_commands()
       ;;
     notes)
       echo -e "${YELLOW}notes${NC}"
-      echo -e "${CYAN} > notes_screen :::: ${NC}Show info on how to use the screen utility on Linux systems"
-      echo -e "${CYAN} > notes_remote_form_post_with_file :::: ${NC}Show info on how to post to a form with file using cURL"
+      echo -e "${CYAN} > notes_screen :::: ${NC}Show notes on how to use the screen utility on Linux systems"
+      echo -e "${CYAN} > notes_remote_form_post_with_file :::: ${NC}Show notes on how to post to a form with file using cURL"
+      echo -e "${CYAN} > notes_forgit :::: ${NC}Show notes about using forgit zsh plugin"
+      echo -e "${CYAN} > notes_k8s :::: ${NC}Show notes about using kubectl commands"
+      echo -e "${CYAN} > notes_helm :::: ${NC}Show notes about using helm commands"
+      echo -e "${CYAN} > notes_terraform :::: ${NC}Show notes about using terraform commands"
+      echo -e "${CYAN} > notes_gcloud :::: ${NC}Show notes about using gcloud commands"
+      echo -e "${CYAN} > notes_packer :::: ${NC}Show notes about using packer on the command line"
+      echo -e "${CYAN} > notes_blackbox :::: ${NC}Show notes about using blackbox commands"
+      echo -e "${CYAN} > notes_jo :::: ${NC}Show notes about using jo for creating json objects"
       ;;
     redis)
       echo -e "${YELLOW}redis${NC}"

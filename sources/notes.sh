@@ -155,3 +155,37 @@ function notes_blackbox()
   blackbox_shred_all_files
   blackbox_postdeploy\n\n"
 }
+
+function notes_jo()
+{
+  echo -e "\nhttps://github.com/jpmens/jo/blob/master/jo.md\n"
+  echo -e "\njo name=Brandon
+  {\"name\": \"Brandon\"}
+  \njo tst=1457081292 lat=12.3456 cc=FR badfloat=3.14159.26 name=\"JP Mens\" nada= coffee@T
+  {\"tst\":1457081292,\"lat\":12.3456,\"cc\":\"FR\",\"badfloat\":\"3.14159.26\",\"name\":\"JP Mens\",\"nada\":null,\"coffee\":true}
+  \njo -p -a *
+  [\"Makefile\", \"README.md\", \"jo.1\", \"jo.c\", \"jo.pandoc\", \"json.c\", \"json.h\"]
+  \njo -p name=JP object=\$(jo fruit=Orange hungry@0 point=\$(jo x=10 y=20 list=\$(jo -a 1 2 3 4 5)) number=17) sunday@0
+  {
+    \"name\": \"JP\",
+    \"object\": {
+      \"fruit\": \"Orange\",
+      \"hungry\": false,
+      \"point\": {
+        \"x\": 10,
+        \"y\": 20,
+        \"list\": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      \"number\": 17
+    },
+    \"sunday\": false
+  }"
+}
+
+
