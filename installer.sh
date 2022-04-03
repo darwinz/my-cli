@@ -255,11 +255,14 @@ else
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   # Install forgit
-  hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+  hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/forgit
   # Install zsh-syntax-highlighting
   hub clone zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
   # Install fzf-tab
   hub clone Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+  # Install jq-repl
+  hub clone reegnz/jq-zsh-plugin ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jq-zsh-plugin
+  cp ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jq-zsh-plugin/bin/jq-repl /usr/local/bin/jq-repl
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
