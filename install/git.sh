@@ -54,7 +54,7 @@ git config --global alias.st 'status -sb'
 git config --global alias.rank 'shortlog -sn --no-merges'
 
 # pr related aliases
-git config --global alias.prc '!gh pr create'
+git config --global alias.prc '!gh pr create -f'
 git config --global alias.prl '!gh pr list'
 
 # list aliases
