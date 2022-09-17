@@ -47,6 +47,7 @@ bi exa
 bi peco
 bi oh-my-posh
 bi httpie
+bi croc
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
