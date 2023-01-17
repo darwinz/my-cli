@@ -197,6 +197,17 @@ function available_commands()
       echo -e "${CYAN} > notes_jo :::: ${NC}Show notes about using jo for creating json objects"
       echo -e "${CYAN} > notes_termtosvg :::: ${NC}Show notes about using termtosvg to create an animated svg of your terminal screen"
       echo -e "${CYAN} > notes_httpie :::: ${NC}Show notes about using httpie to interact with APIs from command line"
+      echo -e "${CYAN} > notes_lsd :::: ${NC}Show notes about using lsd (replacement for ls)"
+      echo -e "${CYAN} > notes_rip :::: ${NC}Show notes about using rip (replacement for rm)"
+      echo -e "${CYAN} > notes_zoxide :::: ${NC}Show notes about using zoxide (replacement for cd with memory and ranking of most used dirs)"
+      echo -e "${CYAN} > notes_dust :::: ${NC}Show notes about using dust (replacement for du)"
+      echo -e "${CYAN} > notes_fd :::: ${NC}Show notes about using fd (replacement for find)"
+      echo -e "${CYAN} > notes_sd :::: ${NC}Show notes about using sd (replacement for sed)"
+      echo -e "${CYAN} > notes_procs :::: ${NC}Show notes about using procs (replacement for ps)"
+      echo -e "${CYAN} > notes_bottom :::: ${NC}Show notes about using bottom (btm) (complementary to top)"
+      echo -e "${CYAN} > notes_topgrade :::: ${NC}Show notes about using topgrade (keeping system up to date)"
+      echo -e "${CYAN} > notes_tokei :::: ${NC}Show notes about using tokei (display stats about your code)"
+      echo -e "${CYAN} > notes_eva :::: ${NC}Show notes about using eva (evaluate) (CLI REPL calculator)"
       ;;
     redis)
       echo -e "${YELLOW}redis${NC}"

@@ -27,4 +27,5 @@ ni react-scripts true
 ni typescript true
 ni winston true
 ni vercel true
+ni appwrite-cli true
 

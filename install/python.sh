@@ -33,4 +33,5 @@ pi redis true
 pi pytz true
 p3i yq true
 p3i termtosvg
+p3i pynvim
 

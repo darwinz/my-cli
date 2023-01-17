@@ -194,6 +194,11 @@ function gei() {
   fi
 }
 
+function ci() {
+  echo 'cargo install' $1
+  cargo install $1
+}
+
 function gi() {
   small_separator
   if [[ "$2" != true ]]
@@ -240,8 +245,8 @@ function ai() {
     response=${response}
     if [[ $response =~ ^(yes|y)$ ]]
     then
-      echo 'brew cask install' $1
-      brew cask install $1
+      echo 'brew install --cask' $1
+      brew install --cask $1
     else
       echo "skipped brew cask install $1"
     fi

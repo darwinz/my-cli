@@ -171,6 +171,12 @@ function setup_jenv()
   jenv global 10.0.2
 }
 
+function setup_rust()
+{
+  "Installing rust and cargo"
+  curl https://sh.rustup.rs -sSf | sh
+}
+
 function setup_goenv()
 {
   git clone https://github.com/syndbg/goenv.git $HOME/.goenv

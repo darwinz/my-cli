@@ -48,6 +48,19 @@ bi peco
 bi oh-my-posh
 bi httpie
 bi croc
+bi ctags
+bi lsd
+bi rm-improved
+bi zoxide
+bi dust
+bi ripgrep
+bi fd
+bi sd
+bi procs
+bi bottom
+bi broot
+bi tokei
+bi eva
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar

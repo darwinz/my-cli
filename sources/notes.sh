@@ -217,6 +217,123 @@ function notes_httpie()
   http --session=logged-in -a username:password pie.dev/get API-Key:123
   http --session=logged-in pie.dev/headers
   \n\n// Use query string params
-  http https://api.github.com/search/repositories q==httpie per_page==1
+  http https://api.github.com/search/repositories q==httpie per_page==1"
+}
+
+function notes_lsd()
+{
+  echo -e "\nhttps://github.com/Peltoche/lsd\n"
+}
+
+function notes_rip()
+{
+  echo -e "\nhttps://github.com/nivekuil/rip\n"
+}
+
+function notes_zoxide()
+{
+  echo -e "\nhttps://github.com/ajeetdsouza/zoxide\n"
+  echo -e "\n\nZoxide (z) remembers each time you cd into a directory and ranks them for next time\n"
+  echo -e "\n\nUse <space>+<tab> to pull up the prompt\n"
+}
+
+function notes_dust()
+{
+  echo -e "\nhttps://github.com/bootandy/dust\n"
+  echo -e "\n\nUsage: dust
+  Usage: dust <dir>
+  Usage: dust <dir>  <another_dir> <and_more>
+  Usage: dust -p (full-path - Show fullpath of the subdirectories)
+  Usage: dust -s (apparent-size - shows the length of the file as opposed to the amount of disk space it uses)
+  Usage: dust -n 30  (Shows 30 directories instead of the default [default is terminal height])
+  Usage: dust -d 3  (Shows 3 levels of subdirectories)
+  Usage: dust -D (Show only directories (eg dust -D))
+  Usage: dust -r (reverse order of output)
+  Usage: dust -H (si print sizes in powers of 1000 instead of 1024)
+  Usage: dust -X ignore  (ignore all files and directories with the name 'ignore')
+  Usage: dust -x (Only show directories on the same filesystem)
+  Usage: dust -b (Do not show percentages or draw ASCII bars)
+  Usage: dust -i (Do not show hidden files)
+  Usage: dust -c (No colors [monochrome])
+  Usage: dust -f (Count files instead of diskspace)
+  Usage: dust -t (Group by filetype)
+  Usage: dust -z 10M (min-size, Only include files larger than 10M)
+  Usage: dust -e regex (Only include files matching this regex (eg dust -e \"\.png$\" would match png files))
+  Usage: dust -v regex (Exclude files matching this regex (eg dust -v \"\.png$\" would ignore png files))\n"
+}
+
+function notes_fd()
+{
+  echo -e "\nFind replacement\n"
+  echo -e "\n\nhttps://github.com/sharkdp/fd\n"
+  echo -e "\n\nfd sometext\n"
+  echo -e "\nfd sometext --type f\n"
+  echo -e "\nfd sometext --type d\n"
+  echo -e "\nregex: fd '^x.*rc$'\n"
+  echo -e "\specify root in 2nd arg: fd passwd /etc\n"
+}
+
+function notes_sd()
+{
+  echo -e "\nSed replacement\n"
+  echo -e "\n\nhttps://github.com/chmln/sd\n"
+  echo -e "\n\nsd text replacement dump.json\n"
+  echo -e "\nsd \"\\\"\" \"'\" *.json >/dev/null\n"
+  echo -e "\necho 'lots((([]))) of special chars' | sd -s '((([])))' ''\n"
+  echo -e "\necho 'lorem ipsum 23   ' | sd '\s+$' ''\n"
+}
+
+function notes_procs()
+{
+  echo -e "\nps replacement\n"
+  echo -e "\n\nhttps://github.com/dalance/procs\n"
+  echo -e "\n\nprocs\n"
+  echo -e "\nprocs zsh\n"
+  echo -e "\nprocs --or 6000 60000 60001 16723\n"
+  echo -e "\nprocs --and docker nerd\n"
+  echo -e "\nprocs --tree\n"
+  echo -e "\nSORT: procs --sortd cpu\n"
+  echo -e "\nSORT ASC: procs --sorta cputime\n"
+}
+
+function notes_bottom()
+{
+  echo -e "\ncomplementary to top\n"
+  echo -e "\n\nhttps://github.com/ClementTsang/bottom\n"
+  echo -e "\n\nbtm\n"
+  echo -e "\nbtm --help\n"
+}
+
+function notes_topgrade()
+{
+  echo -e "\nKeeping your system up to date\n"
+  echo -e "\n\nhttps://github.com/topgrade-rs/topgrade\n"
+  echo -e "\n\ntopgrade\n"
+}
+
+function notes_broot()
+{
+  echo -e "\nTree alternative - with interactivity and file previewing\n"
+  echo -e "\n\nhttps://github.com/Canop/broot\n"
+}
+
+function notes_tokei()
+{
+  echo -e "\ndisplays statistics about your code\n"
+  echo -e "\n\nhttps://github.com/XAMPPRocky/tokei\n"
+  echo -e "\n\ntoken ./foo\n"
+  echo -e "\ntokei ./foo, ./bar, ./baz\n"
+  echo -e "\ntokei ./foo --exclude *.rs\n"
+}
+
+function notes_eva()
+{
+  echo -e "\nCLI REPL calculator\n"
+  echo -e "\n\neva\n"
+  echo -e "\n2 ^ 5 ^ 2\n"
+  echo -e "\n33,554,432.0\n"
+  echo -e "\nlog(sqrt(100))\n"
+  echo -e "\nsin(45 + 5 * 9)\n"
+  echo -e "\n 1.0 \n"
 }
 
