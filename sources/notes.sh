@@ -340,10 +340,10 @@ function notes_eva()
 function notes_op()
 {
   echo -e "\nCLI for 1Password\n"
-  echo -e "\n\nhttps://github.com/ameba23/op\n"
-  echo -e "\n\nop item list | grep <item name>\n"
-  echo -e "\n\nop get item <item name>\n"
+  echo -e "\n\nhttps://github.com/1Password/shell-plugins\n"
+  echo -e "\nop item list | grep <item name>\n"
+  echo -e "\nop get item <item name>\n"
   echo -e "\nop get item <item name> --fields <field name>\n"
-  echo -e "\n\nop document list | grep <item name>\n"
-  echo -e "\n\nop get document <document name>\n"
+  echo -e "\nop document list | grep <item name>\n"
+  echo -e "\nop get document <document name>\n"
 }
