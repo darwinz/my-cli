@@ -61,6 +61,7 @@ bi bottom
 bi broot
 bi tokei
 bi eva
+bi doctl
 
 bt "homebrew/cask-fonts" font-hack-nerd-font
 bt "homebrew/cask" bitbar
