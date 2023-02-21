@@ -208,6 +208,7 @@ function available_commands()
       echo -e "${CYAN} > notes_topgrade :::: ${NC}Show notes about using topgrade (keeping system up to date)"
       echo -e "${CYAN} > notes_tokei :::: ${NC}Show notes about using tokei (display stats about your code)"
       echo -e "${CYAN} > notes_eva :::: ${NC}Show notes about using eva (evaluate) (CLI REPL calculator)"
+      echo -e "${CYAN} > notes_op :::: ${NC}Show notes about using op (one-password)"
       ;;
     redis)
       echo -e "${YELLOW}redis${NC}"
