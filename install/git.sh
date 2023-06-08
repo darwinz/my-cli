@@ -63,6 +63,11 @@ git config --global alias.la "!git config -l | grep alias | cut -c 7-"
 # list commits to branches in a nice format
 git config --global alias.cbb "!git for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 
+# tags related aliases
+git config --global alias.tl 'tag -l'
+git config --global alias.tls 'tag -l --sort=-v:refname'
+git config --global alias.dt 'describe --tags --abbrev=0'
+
 # git flow aliases
 git config --global alias.ffs "!git flow feature start"
 git config --global alias.fff "!git flow feature finish"
