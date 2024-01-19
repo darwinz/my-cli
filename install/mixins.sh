@@ -42,16 +42,16 @@ function bt() {
     then
       echo 'brew tap' $1
       brew tap $1
-      echo 'brew install' $2
-      brew cask install $2
+      echo 'brew install --cask' $2
+      brew install --cask $2
     else
-      echo "skipped brew install $2"
+      echo "skipped brew install --cask $2"
     fi
   else
     echo 'brew tap' $1
     brew tap $1
-    echo 'brew install' $2
-    brew cask install $2
+    echo 'brew install --cask' $2
+    brew install --cask $2
   fi
 }
 
@@ -172,6 +172,25 @@ function gg() {
   else
     echo 'go get' $1
     go get $1
+  fi
+}
+
+function gi() {
+  small_separator
+  if [[ "$2" != true ]]
+  then
+    read -r -p "Do you want to install $1 package? [y/N] " response
+    response=${response}
+    if [[ $response =~ ^(yes|y)$ ]]
+    then
+      echo 'go install' $1
+      go install $1
+    else
+      echo "skipped go install $1"
+    fi
+  else
+    echo 'go install' $1
+    go install $1
   fi
 }
 
