@@ -30,7 +30,6 @@ source ./sources/0001-environment.sh
 
 if [ "${whichOS}" = "Darwin" ]; then
   thisDir=$(builtin cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-  install_homebrew
 else
   thisDir=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 fi
@@ -51,7 +50,6 @@ if [ ! -z "${FULL}" ]; then
   source ${thisDir}/install/git.sh
   setup_nvm
   setup_goenv
-  setup_jenv
   setup_rapture
   setup_spark
   source ${thisDir}/install/go.sh
@@ -219,14 +217,14 @@ fi
 
 sudo rm -f ${thisDir}/bin/mycli
 touch ${thisDir}/bin/mycli
-echo '#!/bin/bash' > ${thisDir}/bin/mycli
+echo '#!/bin/zsh' > ${thisDir}/bin/mycli
 
 ## Create the .mycli source file for bash profile
 if [ -f "${user_dir}/.mycli" ]; then
   rm -f ${user_dir}/.mycli
 fi
 touch ${user_dir}/.mycli
-echo "#!/bin/bash" > ${user_dir}/.mycli
+echo "#!/bin/zsh" > ${user_dir}/.mycli
 
 cd ${thisDir}
 
@@ -256,19 +254,6 @@ if [[ "${SHELL}" = *"bash" ]]; then
   patch_bash_profile
 else
   patch_zsh
-
-  # Install oh-my-zsh
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-  # Install forgit
-  hub clone wfxr/forgit ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/forgit
-  # Install zsh-syntax-highlighting
-  hub clone zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-  # Install fzf-tab
-  hub clone Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-  # Install jq-repl
-  hub clone reegnz/jq-zsh-plugin ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jq-zsh-plugin
-  cp ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/jq-zsh-plugin/bin/jq-repl /usr/local/bin/jq-repl
 fi
 
 ## Install MyCLI in /usr/local/bin/mycli
